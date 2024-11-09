@@ -40,11 +40,11 @@ hadith_index = (day_of_month - 1) % len(hadith_sections)  # Wrap around if day e
 selected_hadith = hadith_sections[hadith_index]
 
 # Remove "Volume..." and "Narrated..." text for cleaner output
-cleaned_hadith = re.sub(r'Volume.*?Narrated.*?:\s*', '', selected_hadith, flags=re.DOTALL)
+trimmed_hadith = re.sub(r'Volume.*?Narrated.*?:\s*', '', selected_hadith, flags=re.DOTALL)
 
-# Helper function to convert time to 12-hour format
+# Helper function to convert time to 12-hour format with a.m./p.m.
 def to_12hr_format(time_str):
-    return datetime.strptime(time_str, "%H:%M").strftime("%I:%M %p")
+    return datetime.strptime(time_str, "%H:%M").strftime("%I:%M %p").lstrip("0").replace("AM", "a.m.").replace("PM", "p.m.")
 
 # Step 3: Print prayer times and selected hadith
 if today_prayers and tomorrow_prayers:
@@ -65,6 +65,6 @@ else:
 
 # Print a line break, the formatted hadith with --- before and after, and the URL
 print("\n---")
-print(cleaned_hadith.strip())
+print(trimmed_hadith.strip())
 print("---\n")
 print("https://www.cambournecrescent.org/prayer")
